@@ -90,5 +90,8 @@ void kmain(char *bootstring);
 /* Lab 3: hello() prototype */
 void hello(void);
 
+/* Lab 4: adds a custom test to the menu */
+int lab4test(int, char **);
+
 #endif /* _TEST_H_ */
 

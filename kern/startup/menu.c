@@ -468,6 +468,7 @@ static const char *testmenu[] = {
 	"[fs3] FS write stress       (4)     ",
 	"[fs4] FS write stress 2     (4)     ",
 	"[fs5] FS create stress      (4)     ",
+	"[lab4] Lab 4 Test						 ",
 	NULL
 };
 
@@ -581,6 +582,7 @@ static struct {
 	{ "fs4",	writestress2 },
 	{ "fs5",	createstress },
 
+	{ "lab4", lab4test },
 	{ NULL, NULL }
 };
 
