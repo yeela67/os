@@ -443,6 +443,9 @@ file    test/uw-tests.c
 # Lab 4: custom test on menu
 file	  test/lab4test.c
 
+# Lab 5: Thread test fun
+file		test/threadtest_fun.c
+
 # UW options for different assignments
 defoption A0
 defoption A1
