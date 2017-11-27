@@ -58,8 +58,10 @@ spinlock_init(struct spinlock *lk)
 void
 spinlock_cleanup(struct spinlock *lk)
 {
+	//lk = NULL ;
 	KASSERT(lk->lk_holder == NULL);
 	KASSERT(spinlock_data_get(&lk->lk_lock) == 0);
+	//KASSERT ( spinlock_data_get ( &lk -> lk_lock ) == NULL ) ;
 }
 
 /*

@@ -25,8 +25,6 @@ static void have_fun ( void *junk , unsigned long num )
 {
 	( void ) junk ;
 
-	num = num * 10000 + 6768 ;
-
 	kprintf ( "%lu " , num ) ;
 
 	/*
@@ -34,7 +32,6 @@ static void have_fun ( void *junk , unsigned long num )
 	 * V is signal =  { verhogen (to increment) }
 	 */
 	V ( tsem ) ;
-
 }
 
 static void runthreads_fun ( int NTHREADS )
@@ -47,7 +44,7 @@ static void runthreads_fun ( int NTHREADS )
 	for ( i = 0 ; i < NTHREADS ; i ++ )
 	{
 
-		result = thread_fork ( name , NULL , have_fun , i , i );
+		result = thread_fork ( name , NULL , have_fun , NULL , i );
 
 		if ( result ) 
 		{
@@ -55,7 +52,6 @@ static void runthreads_fun ( int NTHREADS )
 					strerror ( result ) );
 		}	
 	}
-
 
 	/*
 	 * P is wait = { proberen (to test) }
