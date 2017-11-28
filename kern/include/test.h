@@ -88,13 +88,21 @@ void menu(char *argstr);
 void kmain(char *bootstring);
 
 /* Lab 3: hello() prototype */
-void hello(void);
+void hello (void);
 
 /* Lab 4: adds a custom test to the menu */
-int lab4test(int, char **);
+int lab4test(int, char **) ;
 
 /* Lab 5: Thread test fun  */
-int threadtest_fun (int, char **);
+int threadtest_fun (int, char **) ;
+
+/* Project 1: 3 Tests */
+int unsafe_thread_counter (int, char**) ;
+int lock_thread_counter (int, char**) ;
+int spinlock_thread_counter (int, char**) ;
+
+
+
 
 #endif /* _TEST_H_ */
 

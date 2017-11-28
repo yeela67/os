@@ -468,8 +468,15 @@ static const char *testmenu[] = {
 	"[fs3] FS write stress       (4)     ",
 	"[fs4] FS write stress 2     (4)     ",
 	"[fs5] FS create stress      (4)     ",
-	"[lab4] Lab 4 Test						 ",
-	"[ttf] Lab 5 thread test fun			 ",
+	
+	"[lab4] Lab 4 Test					 ",
+	
+	"[ttf] Lab 5 thread test fun		 ",
+	
+	"[utc] Project 1: unsafe thread counter		 ",
+	"[ltc] Project 1: lock thread counter		 ",
+	"[stc] Project 1: spinlock thread counter	 ",
+
 	NULL
 };
 
@@ -586,6 +593,10 @@ static struct {
 	{ "lab4", lab4test },
 
 	{ "ttf" , threadtest_fun  },
+
+	{ "utc" , unsafe_thread_counter  },
+	{ "ltc" , lock_thread_counter  },
+	{ "stc" , spinlock_thread_counter  },
 
 	{ NULL, NULL }
 };

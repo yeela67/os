@@ -446,6 +446,11 @@ file	  test/lab4test.c
 # Lab 5: Thread test fun
 file		test/threadtest_fun.c
 
+# Project 7: 3 tests
+file		test/unsafe_thread_counter.c
+file		test/lock_thread_counter.c
+file		test/spinlock_thread_counter.c
+
 # UW options for different assignments
 defoption A0
 defoption A1
