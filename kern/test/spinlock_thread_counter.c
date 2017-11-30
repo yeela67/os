@@ -2,13 +2,14 @@
 #include <lib.h>
 #include <thread.h>
 #include <synch.h>
+#include <spinlock.h>
 #include <test.h>
-
-static struct semaphore *tsem = NULL;
 
 static int counter = 0 ;
 
-static void init_sem_fun ( void ) 
+static struct semaphore *tsem = NULL;
+
+static void initItems ( void ) 
 {
 	if ( tsem == NULL )
 	{
@@ -95,7 +96,7 @@ int spinlock_thread_counter ( int nargs , char** args )
     	NINCREMENT = num_times_each_thread_increment ;
     }
 
-	init_sem_fun ();
+	initItems ();
 
 	kprintf ( "\n------------------------------" ) ;
 	kprintf ( "\nStarting spinlock thread counter ... \n\n" );

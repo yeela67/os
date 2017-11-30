@@ -1,37 +1,50 @@
 #include <types.h>
 #include <lib.h>
+#include <clock.h>
 #include <thread.h>
 #include <synch.h>
 #include <test.h>
 
-static struct semaphore *tsem = NULL;
-
 static int counter = 0 ;
 
-static struct lock *testlock;
+static struct lock *testlock ;
+
+static struct semaphore *tsem ;
 
 
 /*
  * Methods
  */
 
-static void init_sem_fun ( void ) 
+static void initItems ( void ) 
 {
-	if ( tsem == NULL )
+
+	if ( testlock == NULL ) 
 	{
-		tsem = sem_create ( "tsem" , 0 );
-		if ( tsem == NULL )
+		testlock = lock_create ( "testlock" ) ;
+		if ( testlock == NULL ) 
 		{
-			panic ( "threadtest: sem_create_fun failed\n" );
+			panic ( "synchtest: lock_create failed\n" ) ;
 		}
 	}
+
+	if ( tsem == NULL )
+	{
+		tsem = sem_create ( "tsem" , 0 ) ;
+		if ( tsem == NULL )
+		{
+			panic ( "threadtest: sem_create_fun failed\n" ) ;
+		}
+	}
+
 }
 
 static void have_fun ( void *junk , unsigned long NINCREMENT )
 {
+	int i;
 	( void ) junk ;
 
-	for ( int i = 0 ; i < NINCREMENT ; i ++ )
+	for ( i = 0 ; i < NINCREMENT ; i ++ )
 	{
 		lock_acquire(testlock);
 
@@ -45,6 +58,8 @@ static void have_fun ( void *junk , unsigned long NINCREMENT )
 	 * V is signal =  { verhogen (to increment) }
 	 */
 	V ( tsem ) ;
+
+	thread_exit();
 }
 
 static void runthreads_fun ( int NTHREADS , int NINCREMENT )
@@ -106,7 +121,7 @@ int lock_thread_counter ( int nargs , char** args )
     	NINCREMENT = num_times_each_thread_increment ;
     }
 
-	init_sem_fun ();
+	initItems ();
 
 	kprintf ( "\n------------------------------" ) ;
 	kprintf ( "\nStarting lock thread counter ... \n\n" );
@@ -120,6 +135,8 @@ int lock_thread_counter ( int nargs , char** args )
 	
 	kprintf ( "\n\nlock thread counter done." );
 	kprintf ( "\n------------------------------\n\n" ) ;
+
+	counter = 0 ;
 
 	return 0;
 
