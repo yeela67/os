@@ -10,6 +10,8 @@ static int counter = 0 ;
 
 static void init_sem_fun ( void ) 
 {
+
+	// Semaphore
 	if ( tsem == NULL )
 	{
 		tsem = sem_create ( "tsem" , 0 );
@@ -111,5 +113,7 @@ int unsafe_thread_counter ( int nargs , char** args )
 	kprintf ( "\n------------------------------\n\n" ) ;
 
 	return 0;
+
+	sem_destroy ( &tsem );
 
 }

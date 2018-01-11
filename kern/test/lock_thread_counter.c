@@ -19,6 +19,7 @@ static struct semaphore *tsem ;
 static void initItems ( void ) 
 {
 
+	// Lock
 	if ( testlock == NULL ) 
 	{
 		testlock = lock_create ( "testlock" ) ;
@@ -28,6 +29,7 @@ static void initItems ( void )
 		}
 	}
 
+	// Semaphore
 	if ( tsem == NULL )
 	{
 		tsem = sem_create ( "tsem" , 0 ) ;

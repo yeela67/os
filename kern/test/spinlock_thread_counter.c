@@ -1,16 +1,28 @@
 #include <types.h>
 #include <lib.h>
-#include <thread.h>
-#include <synch.h>
+#include <clock.h>
+
+#include <cpu.h>
+
 #include <spinlock.h>
+#include <wchan.h>
+#include <thread.h>
+#include <current.h>
+#include <synch.h>
+
 #include <test.h>
+#include <spl.h>
 
 static int counter = 0 ;
+
+static struct spinlock *test_spinlock ;
+static struct lock *testlock ;
 
 static struct semaphore *tsem = NULL;
 
 static void initItems ( void ) 
 {
+	// Semaphore
 	if ( tsem == NULL )
 	{
 		tsem = sem_create ( "tsem" , 0 );
@@ -19,6 +31,9 @@ static void initItems ( void )
 			panic ( "threadtest: sem_create_fun failed\n" );
 		}
 	}
+
+	// Spinlock
+	spinlock_init ( &test_spinlock );
 }
 
 static void have_fun ( void *junk , unsigned long NINCREMENT )
@@ -27,7 +42,11 @@ static void have_fun ( void *junk , unsigned long NINCREMENT )
 
 	for ( int i = 0 ; i < NINCREMENT ; i ++ )
 	{
+		spinlock_acquire ( &test_spinlock );
+
 		counter ++ ;
+
+		spinlock_release ( &test_spinlock );
 	}
 
 	/*
@@ -110,6 +129,10 @@ int spinlock_thread_counter ( int nargs , char** args )
 	
 	kprintf ( "\n\nspinlock thread counter done." );
 	kprintf ( "\n------------------------------\n\n" ) ;
+
+	counter = 0;
+
+	spinlock_cleanup ( &test_spinlock ) ;
 
 	return 0;
 
