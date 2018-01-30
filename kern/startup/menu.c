@@ -151,6 +151,12 @@ common_prog(int nargs, char **args)
 		return result;
 	}
 
+#ifdef UW
+	/* wait until the process we have just launched - and any others that it 
+	   may fork - is finished before proceeding */
+	P(no_proc_sem);
+#endif // UW
+
 	/*
 	 * The new process will be destroyed when the program exits...
 	 * once you write the code for handling that.

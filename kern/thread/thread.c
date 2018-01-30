@@ -483,6 +483,10 @@ thread_fork(const char *name,
 	struct thread *newthread;
 	int result;
 
+#ifdef UW
+	DEBUG(DB_THREADS,"Forking thread: %s\n",name);
+#endif // UW
+
 	newthread = thread_create(name);
 	if (newthread == NULL) {
 		return ENOMEM;
@@ -780,11 +784,17 @@ thread_exit(void)
 
 	cur = curthread;
 
-	/*
-	 * Detach from our process. You might need to move this action
-	 * around, depending on how your wait/exit works.
-	 */
+#ifdef UW
+	/* threads for user processes should have detached from their process
+	   in sys__exit */
+	KASSERT(curproc == kproc || curproc == NULL);	
+	/* kernel threads don't go through sys__exit, so we detach them from kproc here */
+	if (curproc == kproc) {
+	  proc_remthread(cur);
+	}
+#else // UW
 	proc_remthread(cur);
+#endif // UW
 
 	/* Make sure we *are* detached (move this only if you're sure!) */
 	KASSERT(cur->t_proc == NULL);
