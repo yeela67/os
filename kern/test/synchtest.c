@@ -40,8 +40,8 @@
 
 #define NSEMLOOPS     63
 #define NLOCKLOOPS    120
-#define NCVLOOPS      5
-#define NTHREADS      32
+#define NCVLOOPS      1
+#define NTHREADS      10
 
 static volatile unsigned long testval1;
 static volatile unsigned long testval2;
@@ -321,7 +321,11 @@ cvtest(int nargs, char **args)
 
 	inititems();
 	kprintf("Starting CV test...\n");
+#ifdef UW
+	kprintf("%d threads should print out in reverse order %d times.\n", NTHREADS, NCVLOOPS);
+#else
 	kprintf("Threads should print out in reverse order.\n");
+#endif
 
 	testval1 = NTHREADS-1;
 
