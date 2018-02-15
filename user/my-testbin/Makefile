@@ -7,5 +7,6 @@ SUBDIRS= example
 SUBDIRS= writeConsole
 SUBDIRS= timeOfDay
 SUBDIRS= getpid
+SUBDIRS= stubtest
 
 .include "$(TOP)/mk/os161.subdir.mk"

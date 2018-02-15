@@ -99,6 +99,8 @@ sys_waitpid(pid_t pid,
   int exitstatus;
   int result;
 
+  // ADDED STUFF:
+
   if (status == NULL) {
   return EFAULT;
   }
@@ -127,6 +129,10 @@ sys_waitpid(pid_t pid,
   return(0);
 }
 
+/**
+ * Begin Added code: 
+ */
+
 void forked_child_thread_entry(void * ptr, unsigned long val);
 void forked_child_thread_entry(void * ptr, unsigned long val) {
   (void)val;
@@ -136,32 +142,47 @@ void forked_child_thread_entry(void * ptr, unsigned long val) {
   enter_forked_process(tf);
 }
 
-int sys_fork(struct trapframe * tf, pid_t * retval){
-  struct trapframe * newtf = kmalloc(sizeof(struct trapframe));
-  if (newtf == NULL) {
+/**
+ * Create a new process.
+ */
+int sys_fork(struct trapframe * tf, pid_t * retval) {
+  int result = 0;
+  struct proc * child_proc;
+  struct trapframe * parent_tf;
+
+  // Copying the parent's trapframe
+  parent_tf = kmalloc(sizeof(struct trapframe));
+  if (parent_tf == NULL) {
     return ENOMEM;
   }
-  *newtf = *tf;
-  // disabling ALL interrupts so we can fork safely
+  *parent_tf = *tf;
+
+  // Disabling ALL interrupts to fork safely
   int spl = splhigh();
-  struct proc * child_proc = proc_fork(curproc);
+  child_proc = proc_fork(curproc);
   if (child_proc == NULL) {
-    kfree(newtf);
+    kfree(parent_tf);
     splx(spl);
     return ENOMEM; 
   }
-  int ret = thread_fork(curthread->t_name, child_proc, &forked_child_thread_entry,
-  (void*)newtf, (unsigned long)curproc->p_addrspace);
+      // Creating child thread using thread_fork
+  result = thread_fork
+    (curthread->t_name, child_proc, &forked_child_thread_entry,
+    (void*)parent_tf, (unsigned long)curproc->p_addrspace);
+  
   // can enable interrupts now
   splx(spl); 
-  if (ret) {
+
+  if (result) {
     proc_destroy(child_proc);
-    kfree(newtf);
-    return ret;
+    kfree(parent_tf);
+    return result;
   }
+  // Parent returns with child’s pid immediately
   *retval = child_proc->pid;
   return(0);
 }
+
 
 
 int sys_execv(userptr_t progname_ptr, userptr_t args_ptr){
