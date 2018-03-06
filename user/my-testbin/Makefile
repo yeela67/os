@@ -6,11 +6,12 @@ TOP=../..
 SUBDIRS= example 
 SUBDIRS= writeConsole
 SUBDIRS= timeOfDay
-SUBDIRS= getpid
 SUBDIRS= stubtest
+SUBDIRS= getpid
 SUBDIRS= onefork
 SUBDIRS= fork
 SUBDIRS= forkchain
 SUBDIRS= forkfan
+SUBDIRS= getPid
 
 .include "$(TOP)/mk/os161.subdir.mk"

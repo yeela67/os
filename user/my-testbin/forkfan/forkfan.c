@@ -10,12 +10,12 @@
 int main(void) {
    pid_t childpid;
    for (int i = 1; i < 5; i++) {
-   		if ((childpid = fork()) <= 0) {
-   			break;
-   		}
+   	if ((childpid = fork()) <= 0) {
+   		break;
+   	}
 		char c = childpid + '0';
-   		putchar(c);
-   		putchar('\n');
+   	putchar(c);
+   	putchar('\n');
    }
    return 0;
 }

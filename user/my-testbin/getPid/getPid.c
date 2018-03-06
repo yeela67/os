@@ -1,6 +1,5 @@
 /**
- * A user program tha tcalls the getpid system call
- * and gets the pid back.
+ * A simple git pid test.
  */
 
 #include <unistd.h>
@@ -14,7 +13,6 @@ int main(void) {
 	pid_t pid = getpid();
 	char c = pid + '0';
    	putchar(c);
+   	putchar('\n');
 	return 0;
 }
-
-
