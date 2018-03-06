@@ -1,3 +1,7 @@
+/**
+ * Process-related syscalls.
+ */
+
 #include <types.h>
 #include <kern/errno.h>
 #include <kern/unistd.h>
@@ -90,6 +94,10 @@ sys_getpid(pid_t *retval)
 
 /* stub handler for waitpid() system call                */
 
+/**
+ * Suspends execution of the current process 
+ * until a child specified by pid argument has changed state.
+ */
 int
 sys_waitpid(pid_t pid,
       userptr_t status,
@@ -99,34 +107,43 @@ sys_waitpid(pid_t pid,
   int exitstatus;
   int result;
 
-  // ADDED STUFF:
-
+  // Check if the status is not null
   if (status == NULL) {
-  return EFAULT;
+    return EFAULT;
   }
 
+  // Check to make sure unsuported options are not requested
   if (options != 0) {
     return(EINVAL);
   }
 
+  // ADDED STUFF:
+
   struct proc * child_proc = proc_find_child(curproc, pid);
+
+  // Current process does not exist (exited a while ago or never existed)
   if (child_proc == NULL) {
     return waitpid_interested_error(pid);
   }
 
   lock_acquire(child_proc->proc_exit_lock);
-  if(!child_proc->proc_exited){
-  cv_wait(child_proc->proc_exit_cv, child_proc->proc_exit_lock);
-  }
 
+  // Assume process exists and is the child of the current process
+  if(!child_proc->proc_exited) {
+    cv_wait(child_proc->proc_exit_cv, child_proc->proc_exit_lock);
+  }
   exitstatus = child_proc->proc_exit_status;
   lock_release(child_proc->proc_exit_lock);
   result = copyout((void *)&exitstatus,status,sizeof(int));
   if (result) {
     return(result);
   }
+  
+  // END ADDED STUFF:
+
   *retval = pid;
   return(0);
+
 }
 
 /**

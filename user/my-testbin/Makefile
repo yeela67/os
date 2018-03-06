@@ -8,5 +8,9 @@ SUBDIRS= writeConsole
 SUBDIRS= timeOfDay
 SUBDIRS= getpid
 SUBDIRS= stubtest
+SUBDIRS= onefork
+SUBDIRS= fork
+SUBDIRS= forkchain
+SUBDIRS= forkfan
 
 .include "$(TOP)/mk/os161.subdir.mk"

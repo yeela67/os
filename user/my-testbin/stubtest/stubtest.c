@@ -14,14 +14,14 @@ int main(void) {
 	int pid = 1;
 
 	pid = getpid();
-	printf("pid from getpid is %d\n", pid);
+	putchar(pid)
 
 	pid = waitpid(pid, 0, -1);
-	printf("pid from waitpid is %d\n", pid);
+	putchar(pid);
 
 
 	pid = fork();
-	printf("pid from fork is %d\n", pid);
+	putchar(pid);
 
 	return 0;
 }
