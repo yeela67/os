@@ -204,7 +204,6 @@ int sys_fork(struct trapframe * tf, pid_t * retval) {
 
 int sys_execv(userptr_t progname_ptr, userptr_t args_ptr){
 
-  
   char* prog_name = kmalloc(PATH_MAX); 
   size_t prog_name_len;
   if((char*)progname_ptr == NULL || (char**)args_ptr == NULL){
@@ -231,7 +230,6 @@ int sys_execv(userptr_t progname_ptr, userptr_t args_ptr){
     return result_prog_name;
   }
 
-
   char* argv = kmalloc(ARG_MAX);
   size_t * arg_offsets = kmalloc(argc * sizeof(size_t));
         int offset = 0;
@@ -252,7 +250,6 @@ int sys_execv(userptr_t progname_ptr, userptr_t args_ptr){
 
   struct addrspace *curproc_as = curproc_getas();
   
-
   struct addrspace *as;
   struct vnode *v;
   vaddr_t entrypoint, stackptr;

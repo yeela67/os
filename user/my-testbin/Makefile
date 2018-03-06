@@ -13,5 +13,6 @@ SUBDIRS= fork
 SUBDIRS= forkchain
 SUBDIRS= forkfan
 SUBDIRS= getPid
+SUBDIRS= forkTest
 
 .include "$(TOP)/mk/os161.subdir.mk"
